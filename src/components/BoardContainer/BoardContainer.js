@@ -38,7 +38,12 @@ class BoardContainer extends React.Component {
   }
 
   saveNewBoard = (newBoard) => {
-    console.log('newBoard from container', newBoard);
+    boardsData.saveBoard(newBoard)
+      .then(() => {
+        this.getAllBoards();
+        this.setState({ formOpen: false });
+      })
+      .catch((err) => console.error('unable to add board', err));
   }
 
   render() {

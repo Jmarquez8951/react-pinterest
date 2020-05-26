@@ -64,7 +64,7 @@ class BoardForm extends React.Component {
               value={boardDescription}
               onChange={this.descriptionChange}/>
           </div>
-          <button className="btn btn-dark m-2" onClick={this.saveBoard}>Save Board</button>
+          <button className="btn btn-dark m-1" onClick={this.saveBoard}>Save Board</button>
         </form>
       </div>
     );
