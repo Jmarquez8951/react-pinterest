@@ -37,6 +37,10 @@ class BoardContainer extends React.Component {
       .catch((err) => console.error('unable to delete full board', err));
   }
 
+  saveNewBoard = (newBoard) => {
+    console.log('newBoard from container', newBoard);
+  }
+
   render() {
     const { boards, formOpen } = this.state;
     const { setSingleBoard } = this.props;
@@ -45,8 +49,8 @@ class BoardContainer extends React.Component {
     return (
       <div className="BoardContainer">
         <h2>Boards</h2>
-        <button className="btn btn-warning m-2" onClick={() => this.setState({ formOpen: true })}><i class="fas fa-plus"></i></button>
-        { formOpen ? <BoardForm/> : ''}
+        <button className="btn btn-warning m-2" onClick={() => this.setState({ formOpen: true })}><i className="fas fa-plus"></i></button>
+        { formOpen ? <BoardForm saveNewBoard={this.saveNewBoard}/> : ''}
         <div className="d-flex flex-wrap">
           {makeBoards}
         </div>
