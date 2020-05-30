@@ -8,6 +8,8 @@ import './BoardForm.scss';
 class BoardForm extends React.Component {
   static propTypes = {
     saveNewBoard: PropTypes.func.isRequired,
+    putBoard: PropTypes.func.isRequired,
+    board: PropTypes.object.isRequired,
   }
 
   state = {

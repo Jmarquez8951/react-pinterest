@@ -9,11 +9,21 @@ class PinForm extends React.Component {
   static propTypes = {
     boardId: PropTypes.string.isRequired,
     saveNewPin: PropTypes.func.isRequired,
+    putPin: PropTypes.func.isRequired,
+    pin: PropTypes.object.isRequired,
   }
 
   state = {
     pinTitle: '',
     pinImageUrl: '',
+    isEditing: false,
+  }
+
+  componentDidMount() {
+    const { pin } = this.props;
+    if (pin.title) {
+      this.setState({ pinTitle: pin.title, pinImageUrl: pin.imageUrl, isEditing: true });
+    }
   }
 
   titeChange = (e) => {
@@ -39,8 +49,21 @@ class PinForm extends React.Component {
     saveNewPin(newPin);
   }
 
-  render() {
+  updatePin = (e) => {
+    e.preventDefault();
     const { pinImageUrl, pinTitle } = this.state;
+    const { boardId, putPin, pin } = this.props;
+    const updatedPin = {
+      boardId,
+      imageUrl: pinImageUrl,
+      title: pinTitle,
+      uid: authData.getUid(),
+    };
+    putPin(pin.id, updatedPin);
+  }
+
+  render() {
+    const { pinImageUrl, pinTitle, isEditing } = this.state;
 
     return (
       <div className="PinForm">
@@ -65,7 +88,11 @@ class PinForm extends React.Component {
             value={pinImageUrl}
             onChange={this.imageUrlChange}/>
         </div>
-        <button className="btn btn-dark m-1" onClick={this.savePin}>Save Pin</button>
+        {
+        isEditing
+          ? <button className="btn btn-dark m-1" onClick={this.updatePin}>Update Pin</button>
+          : <button className="btn btn-dark m-1" onClick={this.savePin}>Save Pin</button>
+        }
       </form>
       </div>
     );
