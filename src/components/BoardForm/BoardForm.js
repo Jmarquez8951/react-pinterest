@@ -13,6 +13,14 @@ class BoardForm extends React.Component {
   state = {
     boardName: '',
     boardDescription: '',
+    isEditing: false,
+  }
+
+  componentDidMount() {
+    const { board } = this.props;
+    if (board.name) {
+      this.setState({ boardName: board.name, boardDescription: board.description, isEditing: true });
+    }
   }
 
   saveBoard = (e) => {
@@ -38,8 +46,20 @@ class BoardForm extends React.Component {
     this.setState({ boardDescription: e.target.value });
   }
 
+  updateBoard = (e) => {
+    e.preventDefault();
+    const { board, putBoard } = this.props;
+    const { boardDescription, boardName } = this.state;
+    const updatedBoard = {
+      description: boardDescription,
+      name: boardName,
+      uid: authData.getUid(),
+    };
+    putBoard(board.id, updatedBoard);
+  }
+
   render() {
-    const { boardName, boardDescription } = this.state;
+    const { boardName, boardDescription, isEditing } = this.state;
 
     return (
       <div className="BoardForm m-2">
@@ -64,7 +84,11 @@ class BoardForm extends React.Component {
               value={boardDescription}
               onChange={this.descriptionChange}/>
           </div>
-          <button className="btn btn-dark m-1" onClick={this.saveBoard}>Save Board</button>
+          {
+          isEditing
+            ? <button className="btn btn-dark m-1" onClick={this.updateBoard}>Update Board</button>
+            : <button className="btn btn-dark m-1" onClick={this.saveBoard}>Save Board</button>
+          }
         </form>
       </div>
     );
